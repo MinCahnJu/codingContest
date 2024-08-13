@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <title>management</title>
+    <link href="/images/MiC 흰색 로고.png" rel="shortcut icon" type="image/x-icon">
+    <link rel="stylesheet" type="text/css" href="/css/styles.css">
+</head>
+<body>
+    <form action="/home" method="post">
+        <div class="box2" style="min-height: max-content; margin-top: 0px;">
+            <input type="submit" class="topnv" value="Object-oriented Programming and Practice">
+        </div>
+    </form>
+    <div class="container2">
+        <div class="left">
+            <form action="/profile" method="get">
+                <button class="ip" style="width: 100px;">Back</button>
+            </form>
+        </div>
+        <div class="right">
+            <span class="jp" th:if="${username != null}" th:text="${username}"></span>
+            <a class="ip" style="width: 100px;" th:if="${username != null}" href="/profile">Profile</a>
+            <a class="ip" style="width: 100px;" th:if="${username != null}" href="/logout">Logout</a>
+            <form th:if="${username == null}" class = "rl" action="/movelogin" method="post">
+                <input class="ip" type="submit" value="Login">
+            </form>
+            <form th:if="${username == null}" class = "rl" action="/moveregister" method="post">
+                <input class="ip" type="submit" value="Register">
+            </form>
+        </div>
+    </div>
+    <hr style="height: 3px; background-color: gray">
+    <div class="tablelist">
+        <span style="font-size: 40px;">User Management</span>
+    </div>
+    <hr class = "hh">
+    <div class="tablelist" th:if="${authority == '5'}">
+        <table>
+            <thead>
+                <tr>
+                    <th>User Name</th>
+                    <th>User ID</th>
+                    <th>User PW</th>
+                    <th>User Tell</th>
+                    <th>Authority</th>
+                    <th>edit</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="user, iterStat : ${users}">
+                    <td th:text="${user[0]}"></td>
+                    <td th:text="${user[1]}"></td>
+                    <td th:text="${user[2]}"></td>
+                    <td th:text="${user[3]}"></td>
+                    <td th:if="${user[0] == username}" th:text="${user[4]}"></td>
+                    <td th:if="${user[0] == username}">You</td>
+                    <form th:id="'multiActionForm' + ${iterStat.index}" method="post" th:if="${user[0] != username}">
+                        <td><input class="authority" type="number" name="selectAuthority" min="0" max="4" step="1" th:value="${user[4]}"></td>
+                        <td>
+                            <input type="hidden" name="username" th:value="${user[0]}">
+                            <button type="submit" name="action" value="action1">Edit</button>
+                            <button type="submit" name="action" value="action2">Delete</button>
+                        </td>
+                    </form>
+                    <script th:inline="javascript">
+                        document.getElementById('multiActionForm' + /*[[${iterStat.index}]]*/).addEventListener('submit', function(event) {
+                            const clickedButton = event.submitter;
+                            if (clickedButton) {
+                                if (clickedButton.value === 'action1') {
+                                    this.action = "/edituser";
+                                } else if (clickedButton.value === 'action2') {
+                                    this.action = '/deleteuser';
+                                }
+                            }
+                        });
+                    </script>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

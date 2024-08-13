@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <title>Object-oriented Programming</title>
+    <link href="/images/MiC 흰색 로고.png" rel="shortcut icon" type="image/x-icon">
+    <link rel="stylesheet" type="text/css" href="/css/styles.css?v=1.0">
+</head>
+<body>
+    <form action="/home" method="post">
+        <div class="box2" style="min-height: max-content; margin-top: 0px;">
+            <input type="submit" class="topnv" value="Object-oriented Programming and Practice">
+        </div>
+    </form>
+    <div class="container2">
+        <div class="left">
+            <form action="/home" method="get">
+                <button class="ip" style="width: 100px;">Back</button>
+            </form>
+        </div>
+        <div class="right">
+            <span class="jp" th:if="${username != null}" th:text="${username}"></span>
+            <a class="ip" style="width: 100px;" th:if="${username != null}" href="/profile">Profile</a>
+            <a class="ip" style="width: 100px;" th:if="${username != null}" href="/logout">Logout</a>
+            <form th:if="${username == null}" class = "rl" action="/movelogin" method="post">
+                <input class="ip" type="submit" value="Login">
+            </form>
+            <form th:if="${username == null}" class = "rl" action="/moveregister" method="post">
+                <input class="ip" type="submit" value="Register">
+            </form>
+        </div>
+    </div>
+    <hr style="height: 3px; background-color: gray">
+    <div class="box2">
+        <div class="formbox">
+            <form action = "/opencontest" method="post">
+                <div class="container">
+                    <hr class = "hh">
+                    <span class="title" style="font-size: 35px; border: none;" th:text="${contestname}"></span>
+                    <hr class = "hh">
+                    <div th:if="${error}" class="error-message">
+                        <p th:text="${error}"></p>
+                    </div>
+                    <input type="hidden" name="contest" th:value="${contestname}">
+                    <div class="line">
+                        <div class="label-group">
+                            <span class="label">C</span>
+                            <span class="label">o</span>
+                            <span class="label">n</span>
+                            <span class="label">t</span>
+                            <span class="label">e</span>
+                            <span class="label">s</span>
+                            <span class="label">t</span>
+                            <span class="label"> </span>
+                            <span class="label">P</span>
+                            <span class="label">a</span>
+                            <span class="label">s</span>
+                            <span class="label">s</span>
+                            <span class="label">w</span>
+                            <span class="label">o</span>
+                            <span class="label">r</span>
+                            <span class="label">d:</span>
+                        </div>
+                        <input class="input-field" type="password" id="password" name="password" required>
+                    </div>
+                    <hr class = "hh">
+                    <hr class = "hh">
+                </div>
+                <hr class = "hh">
+                <input class="submit" type="submit" value="open Contest">
+                <hr class = "hh">
+            </form>
+        </div>
+    </div>
+</body>
+</html>

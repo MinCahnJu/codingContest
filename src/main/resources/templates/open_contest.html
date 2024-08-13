@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <title>open contest</title>
+    <link href="/images/MiC 흰색 로고.png" rel="shortcut icon" type="image/x-icon">
+    <link rel="stylesheet" type="text/css" href="/css/styles.css">
+</head>
+<body>
+    <form action="/home" method="post">
+        <div class="box2" style="min-height: max-content; margin-top: 0px;">
+            <input type="submit" class="topnv" value="Object-oriented Programming and Practice">
+        </div>
+    </form>
+    <div class="container2">
+        <div class="left">
+            <form action="/home" method="get">
+                <button class="ip" style="width: 100px;">Back</button>
+            </form>
+        </div>
+        <div class="right">
+            <span class="jp" th:if="${username != null}" th:text="${username}"></span>
+            <a class="ip" style="width: 100px;" th:if="${username != null}" href="/profile">Profile</a>
+            <a class="ip" style="width: 100px;" th:if="${username != null}" href="/logout">Logout</a>
+            
+            <form th:if="${username == null}" class = "rl" action="/movelogin" method="post">
+                <input class="ip" type="submit" value="Login">
+            </form>
+            <form th:if="${username == null}" class = "rl" action="/moveregister" method="post">
+                <input class="ip" type="submit" value="Register">
+            </form>
+        </div>
+    </div>
+    <hr style="height: 3px; background-color: gray">
+    <div style="text-align: center;">
+        <span class="title" th:text="${contestname}"></span>
+        <div></div>
+        <hr class = "hh">
+        <span class="maker" th:text="'Organizer : ' + ${contestuserid}"></span>
+        <hr class = "hh">
+        <span th:if="${contestpw == 'open'}" style="font-size: 25px; color: red;">Open Contest</span>
+        <div><span class="problem" style="white-space: pre-wrap; border: none; text-align: center;" th:if="${contestdescription != null}" th:text="${contestdescription}"></span></div>
+        <hr class = "hh">
+        
+        <form method="post" action="/moveeditcontest">
+            <input type="hidden" name="contest" th:value="${contest}">
+            <input type="hidden" name="contestid" th:value="${contestid}">
+            <button class="edit" type="submit" name="action" value="편집" th:if="${username == contestuser or authority == '5' or authority == '4'}">Contest Edit</button>
+        </form>
+        <li style="list-style-type: none;" th:each="problem, iterStat : ${problems}">
+            <form method="post" th:id="'multiActionForm' + ${iterStat.index}">
+                <input type="hidden" name="problem" th:value="${problem}">
+                <button class="button" type="submit" name="action" value="O" th:text="${problem}"></button>
+                <button class="edit" type="submit" name="action" value="X" th:if="${username == contestuser or authority == '5' or authority == '4'}">Delete</button>
+                <button class="edit" type="submit" name="action" value="편집" th:if="${username == contestuser or authority == '5' or authority == '4'}">Edit</button>
+            </form>
+            <script th:inline="javascript">
+                document.getElementById('multiActionForm' + /*[[${iterStat.index}]]*/).addEventListener('submit', function(event) {
+                    const clickedButton = event.submitter;
+                    if (clickedButton) {
+                        if (clickedButton.value === 'O') {
+                            this.action = "/openproblem";
+                        } else if (clickedButton.value === 'X') {
+                            this.action = '/deleteproblem';
+                        } else if (clickedButton.value === '편집') {
+                            this.action = '/moveeditproblem';
+                        }
+                    }
+                });
+            </script>
+        </li>
+        <form id="multiActionForm" method="post" th:if="${username == contestuser or authority == '5' or authority == '4'}">
+            <input type="hidden" name="contest" th:value="${contest}">
+            <input type="hidden" name="contestid" th:value="${contestid}">
+            <button class="plus" style="margin-left: -150px;" type="submit" name="action" value="action2">Delete Contest</button>
+            <button class="plus" type="submit" name="action" value="action1">Problem addition</button>
+            
+            <script>
+                document.getElementById('multiActionForm').addEventListener('submit', function(event) {
+                    const clickedButton = event.submitter;
+                    if (clickedButton) {
+                        if (clickedButton.value === 'action1') {
+                            this.action = "/movemakeproblem";
+                        } else if (clickedButton.value === 'action2') {
+                            this.action = '/deletecontest';
+                        }
+                    }
+                });
+            </script>
+        </form>
+    </div>
+</body>
+</html>
