@@ -58,7 +58,7 @@ import io.github.cdimascio.dotenv.Dotenv;
 @Controller
 public class UserController {
     // JDBC URL, 사용자 이름, 비밀번호
-    Dotenv dotenv = Dotenv.load();
+    static Dotenv dotenv = Dotenv.load();
 
     private static final String JDBC_URL = dotenv.get("local_JDBC_URL");
     private static final String DB_USERNAME = dotenv.get("local_DB_USERNAME");
